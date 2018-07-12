@@ -1,3 +1,3 @@
 export default {
-  url: "http://103.68.68.142:8000/wfs"
+  url: "http://210.211.117.149:8000/wfs"
 }

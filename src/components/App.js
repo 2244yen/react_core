@@ -2,23 +2,20 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Login from './Login';
 import Inbound from './Inbound/List';
+import PrivateRoute from '../router/PrivateRoute';
 import './App.css';
 
 class App extends Component {
   render() {
+    const auth = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : '';
+    const loggedIn = auth ? auth.token : '';
+    console.log('Log in', loggedIn);
     return (
       <Router>
         <div className="app">
           <Switch>
             <Route path="/login" component={Login}></Route>
-            <Route path="/" component={Inbound}></Route>
-            {
-              // <Route path="/logout" component={Logout}></Route>
-              // <Master>
-              //   <Route exact path="/" component={Home}></Route>
-              //   <Route path="/books" component={Book}></Route>
-              // </Master>
-            }
+            <PrivateRoute authed={loggedIn} path='/' component={Inbound} />
           </Switch>
         </div>
       </Router>
