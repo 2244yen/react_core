@@ -25,7 +25,8 @@ var getDetail = (id) => {
 var convertToAnotherState = (id, state) => {
   return new Promise((resolve, reject) => {
     api.server.put('/change_state/' + id, state).then((response) => {
-      resolve(response.body)
+      console.log(response);
+      resolve(response.data)
     }, (response) => {
       reject(error)
     })

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import apiAuth from '../../services/auth';
 
 class Login extends Component {
@@ -14,7 +13,7 @@ class Login extends Component {
   }
   
   render () {
-    const { credentials, submitted, isLoggedIn } = this.state;
+    const { credentials, submitted } = this.state;
     // const { from } = this.props.location.state || { from: { pathname: "/" } };
 
     // if (apiAuth.isLoggedIn()) {

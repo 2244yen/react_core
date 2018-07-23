@@ -53,6 +53,17 @@ class Api {
       })
     })
   }
+
+  put (route, data) {
+    return new Promise((resolve, reject) => {
+      axios.put(this.baseUrl + route, data, this.getHeaders()).then(res => {
+        resolve(res)
+      }, (res) => {
+        reject(res)
+        this.checkTokenIsValid(res)
+      })
+    })
+  }
 }
 
 export default Api;

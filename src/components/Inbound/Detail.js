@@ -8,18 +8,24 @@ class Detail extends Component {
       irData: {}
     };
     this.changeStateToReceive = this.changeStateToReceive.bind(this);
+    this.edit = this.edit.bind(this);
   }
 
   changeStateToReceive () {
     if (!window.$.isEmptyObject(this.state.irData) && this.state.irData.state === 'receive') {
       const id = this.props.match.params.id;
-      const data = { state: 'received' }
+      // const data = { state: 'received' }
       if (!this.state.irData.vat) {
         alert('Mã VAT chưa có. Vui lòng cập nhật mã VAT để nhận hàng.');
       } else {
-        apiInbound.convertToAnotherState(id, data).then((response) => {
-          if (response.msg !== '') {
-            this.props.history.replace('/inbound' + id);
+        let formData = new FormData();
+        formData.append('state', 'received');
+        apiInbound.convertToAnotherState(id, formData).then((response) => {
+          console.log(response);
+          if (response && response.error_code === 1) {
+            alert('Cập nhật thành công!');
+            this.props.history.replace('/inbound/' + id);
+            this.getDetail();
           }
         }, err => {
           alert(err);
@@ -28,6 +34,11 @@ class Detail extends Component {
     } else {
       alert('Không thực thi!');
     }
+  }
+
+  edit () {
+    console.log('edit');
+    this.forceUpdate();
   }
 
   getDetail () {
@@ -52,19 +63,22 @@ class Detail extends Component {
         <td>{ product.min_qty ? product.min_qty : '' }</td>
       </tr>
     ))
-    console.log(irData);
+
     return (
       <section className="view-page">
         <div className="row">
           <div className="col-md-4 col-sm-4">
-            <button className="btn btn-primary">Chỉnh sửa</button>
+            <button className="btn btn-primary" onClick={this.edit}>Chỉnh sửa</button>
           </div>
         </div>
         <div className="detail">
           <div className="container">
             <h3 className="title">
               Đề nghị nhập hàng
-              <button className="btn btn-ghn pull-right" onClick={ this.changeStateToReceive } >Nhận hàng</button>
+              {
+                this.state.irData.state === 'receive' &&
+                <button className="btn btn-ghn pull-right" onClick={ this.changeStateToReceive } >Nhận hàng</button>
+              }
             </h3>
             <div className="text-info">
               <div className="row">
@@ -155,6 +169,7 @@ class Detail extends Component {
   componentDidMount () {
     this.getDetail();
   }
+  
 }
 
 export default Detail;
