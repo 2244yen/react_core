@@ -12,6 +12,28 @@ var getList = () => {
   })
 }
 
+var getDetail = (id) => {
+  return new Promise((resolve, reject) => {
+    api.server.get('/inbound_requests/'.concat(id)).then((response) => {
+      resolve(response.data)
+    }, (response) => {
+      reject(error)
+    })
+  })
+}
+
+var convertToAnotherState = (id, state) => {
+  return new Promise((resolve, reject) => {
+    api.server.put('/change_state/' + id, state).then((response) => {
+      resolve(response.body)
+    }, (response) => {
+      reject(error)
+    })
+  })
+}
+
 export default {
-  getList: getList
+  getList: getList,
+  getDetail: getDetail,
+  convertToAnotherState: convertToAnotherState
 }

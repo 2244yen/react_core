@@ -23,9 +23,17 @@ var login = (creds) => {
 
 var logout = () => {
   localStorage.removeItem('auth');
+  window.location.href = "/login";
+}
+
+var isLoggedIn = () => {
+  const user = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : '';
+  const loggedIn = user ? true : false;
+  return loggedIn;
 }
 
 export default {
   login: login,
-  logout: logout
+  logout: logout,
+  isLoggedIn: isLoggedIn
 }

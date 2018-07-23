@@ -1,2 +1,9 @@
 /********Header********/
 
+a {
+    cursor: pointer;
+}
+footer {
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}

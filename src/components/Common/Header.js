@@ -1,30 +1,35 @@
+import React from 'react';
+import Auth from '../../services/auth';
 import '../../assets/styles/main.css';
 
 function Header () {
-    return (
-        <nav class="navbar navbar-default ghn-navbar">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand"></a>
+  const user = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : '';
+  const userName = user ? user.name : '';
+  return (
+    <nav className="navbar navbar-default ghn-navbar">
+      <div className="container-fluid">
+        <div className="navbar-header">
+          <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span className="sr-only">Toggle navigation</span>
+            <span className="icon-bar"></span>
+            <span className="icon-bar"></span>
+            <span className="icon-bar"></span>
+          </button>
+          <a className="navbar-brand">Brand</a>
+        </div>
+        <div className="collapse navbar-collapse ghn-menu" id="bs-example-navbar-collapse-1">
+          <ul className="nav navbar-nav navbar-right ghn-user-info">
+            <li className="dropdown">
+              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{ userName }<span className="caret"></span></a>
+              <ul className="dropdown-menu ghn-dropdown-menu">
+                <li><a onClick={Auth.logout}>Đăng xuất</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="collapse navbar-collapse ghn-menu" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right ghn-user-info">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user ? user.name : 'User' }}<span class="caret"></span></a>
-            <ul class="dropdown-menu ghn-dropdown-menu">
-              <li><router-link to="/change_password">Đổi mật khẩu</router-link></li>
-              <li><router-link to="/logout">Logout</router-link></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-    );
+    </nav>
+  );
 }
+
+export default Header;

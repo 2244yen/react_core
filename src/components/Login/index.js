@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import apiAuth from '../../services/auth';
 
 class Login extends Component {
@@ -11,9 +12,15 @@ class Login extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
   }
-
+  
   render () {
-    const { credentials, submitted } = this.state;
+    const { credentials, submitted, isLoggedIn } = this.state;
+    // const { from } = this.props.location.state || { from: { pathname: "/" } };
+
+    // if (apiAuth.isLoggedIn()) {
+    //   return <Redirect to={from} />;
+    // }
+
     return (
         <div className="col-md-6 col-md-offset-3">
           <h2>Login</h2>
@@ -64,8 +71,8 @@ class Login extends Component {
     const { credentials } = this.state;
     if (credentials.email && credentials.password) {
       apiAuth.login(credentials).then(response => {
-        this.props.history.push('/');
         localStorage.setItem('auth', JSON.stringify(response));
+        this.props.history.push('/');
       }, error => {
         alert('Đăng nhập không thành công!');
       })

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import apiInbound from '../../services/inbound';
+import { Link } from 'react-router-dom';
 import filter from '../../common/filter';
 
 class List extends Component {
@@ -17,7 +18,7 @@ class List extends Component {
   getList () {
     apiInbound.getList().then(response => {
       this.setState({ irList: response });
-      console.log(this.state.irList);
+      // console.log(this.state.irList);
     }, err => {
       alert(err);
     })
@@ -27,7 +28,7 @@ class List extends Component {
     const irList = !window.$.isEmptyObject(this.state.irList) ? this.state.irList.records : [];
     const listIr = irList.map((item, i) => (
       <tr key={i}>
-        <td>{ item.name }</td>
+        <td><Link to={{ pathname: '/inbound/' + item.id }}>{ item.name }</Link></td>
         <td>{ item.origin }</td>
         <td>{ window.moment(item.create_date).format('DD/MM/YYY') }</td>
         <td>{ item.partner_id.name }</td>
