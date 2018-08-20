@@ -13,6 +13,7 @@ class Login extends Component {
   }
   
   render () {
+    console.log('mas');
     const { credentials, submitted } = this.state;
     // const { from } = this.props.location.state || { from: { pathname: "/" } };
 

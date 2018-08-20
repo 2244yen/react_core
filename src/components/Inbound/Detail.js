@@ -41,7 +41,12 @@ class Detail extends Component {
     this.forceUpdate();
   }
 
+  componentDidMount () {
+    this.getDetail();
+  }
+
   getDetail () {
+    console.log(this.props);
     let id = this.props.match.params.id;
     apiInbound.getDetail(id).then(response => {
       this.setState({ irData: response ? response[0] : {} });
@@ -164,10 +169,6 @@ class Detail extends Component {
         </div>
       </section>
     );
-  }
-
-  componentDidMount () {
-    this.getDetail();
   }
   
 }

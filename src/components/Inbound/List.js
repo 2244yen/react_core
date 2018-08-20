@@ -2,21 +2,34 @@ import React, { Component } from 'react';
 import apiInbound from '../../services/inbound';
 import { Link } from 'react-router-dom';
 import filter from '../../common/filter';
+import Pagination from '../Common/Pagination';
 
 class List extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      irList: {}
+      irList: {},
+      dataFilter: {
+        page: 1,
+        limit: 30
+      }
     }
   }
 
   componentDidMount () {
-    this.getList();
+    this.getList(this.state.dataFilter);
   }
 
-  getList () {
-    apiInbound.getList().then(response => {
+  goChangedPage = (page) => {
+    const data = this.state.dataFilter;
+    data.page = page;
+    this.setState({ dataFilter: data});
+    console.log(data);
+    this.getList(data);
+  }
+
+  getList (dataFilter) {
+    apiInbound.getList(dataFilter).then(response => {
       this.setState({ irList: response });
       // console.log(this.state.irList);
     }, err => {
@@ -25,7 +38,8 @@ class List extends Component {
   }
 
   render () {
-    const irList = !window.$.isEmptyObject(this.state.irList) ? this.state.irList.records : [];
+    const irList = !window.$.isEmptyObject(this.state.irList) && this.state.irList.records ? this.state.irList.records : [];
+    const totalRecords = !window.$.isEmptyObject(this.state.irList) && this.state.irList.total_record_count ? this.state.irList.total_record_count : 0;
     const listIr = irList.map((item, i) => (
       <tr key={i}>
         <td><Link to={{ pathname: '/inbound/' + item.id }}>{ item.name }</Link></td>
@@ -37,7 +51,6 @@ class List extends Component {
         <td>{ filter.convertInboundState(item.state) }</td>
       </tr>
     ));
-
     return (
       <div className="container">
         <div className="row">
@@ -47,7 +60,7 @@ class List extends Component {
             </div>
           </div>
         </div>
-        <div className="row">
+        <div>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -64,6 +77,11 @@ class List extends Component {
               { listIr }
             </tbody>
           </table>
+          {
+            totalRecords &&
+            <Pagination totalRecords={ totalRecords } goChangedPage ={ this.goChangedPage } />
+          }
+          
         </div>
       </div>
     );

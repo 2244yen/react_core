@@ -2,9 +2,18 @@ import api from '../api';
 
 const error = 'Có lỗi xảy ra. Vui lòng kiểm tra lại!';
 
-var getList = () => {
+var getList = (data = {}) => {
+  let link = '';
+  for (var item in data) {
+    if (data.hasOwnProperty(item)) {
+      if (data[item]) {
+        link += item + '=' + data[item] + '&';
+      }
+    }
+  }
+  console.log('links', link);
   return new Promise((resolve, reject) => {
-    api.server.get('/inbound_requests?limit=30&page=1').then((response) => {
+    api.server.get('/inbound_requests?' + link).then((response) => {
       resolve(response.data)
     }, (response) => {
       reject(error)
